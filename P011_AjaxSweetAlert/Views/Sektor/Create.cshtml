@@ -1,0 +1,41 @@
+﻿@model Sektor
+
+<form id="ajaxPost">
+    <div class="mb-3">
+        <label class="form-label" asp-for="Tanim"></label>
+        <input class="form-control" asp-for="Tanim" />
+    </div>
+
+</form>
+<button class="btn btn-success" onclick="addAjaxFunc()">Ekle</button>
+@section Scripts{
+    <script type="text/javascript">
+        function addAjaxFunc() {
+            $.ajax({
+                type: "POST",
+                url: "/Sektor/Create",
+                data: new FormData($('#ajaxPost')[0]),
+                contentType: false,
+                processData: false,
+                success: function (modeldenGelenCevap) {
+                    console.log(modeldenGelenCevap.success);
+                    Swal.fire({
+                        title: (modeldenGelenCevap.success) ? 'Kaydetme işlemi başarılı' : 'Hata oldu.',
+                        position: 'center',
+                        icon: (modeldenGelenCevap.success) ? 'success' : 'error',
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }).then(function (yukaridanGelenDeger) {
+                        if (modeldenGelenCevap == "ok")
+                            window.location.href = "/Sektor/Index"
+                    })
+                },
+                error: function () {
+                    alert("ohooo!!! Hata oldu;")
+                }
+
+            });
+        }
+    </script>
+}
